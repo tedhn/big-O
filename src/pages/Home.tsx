@@ -165,7 +165,7 @@ const Home: React.FC<Props> = ({ project, setProject }) => {
 
 			{isShowModal ? (
 				<div className="absolute p-8 text-white -translate-x-1/2 -translate-y-1/2 rounded-md shadow-md bg-neutral-600 top-1/2 left-1/2">
-					<div>Which Type of Project would you like to craete.</div>
+					<div>Which Type of Project would you like to create.</div>
 					<div className="flex items-center gap-4 my-8 justify-evenly">
 						<div
 							className="p-3 rounded-lg cursor-pointer hover:bg-neutral-300/50"
