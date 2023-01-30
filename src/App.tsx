@@ -48,11 +48,20 @@ function App() {
 		{
 			path: "/",
 			element: <Home project={project} setProject={setProject} />,
-			errorElement: <div>page not found</div>,
+			errorElement: (
+				<div className="container h-full flex items-center justify-center mx-auto text-center text-6xl">
+					page not found
+				</div>
+			),
 		},
 		{
 			path: "editor",
 			element: <CodeEditor project={project} setProject={setProject} />,
+			errorElement: (
+				<div className="container h-full flex items-center justify-center mx-auto text-center text-6xl">
+					page not found
+				</div>
+			),
 			children: [
 				{
 					path: ":id",
@@ -63,6 +72,12 @@ function App() {
 		{
 			path: "react",
 			element: <ReactEditor project={project} setProject={setProject} />,
+
+			errorElement: (
+				<div className="container h-full flex items-center justify-center mx-auto text-center text-6xl">
+					page not found
+				</div>
+			),
 			children: [
 				{
 					path: ":id",

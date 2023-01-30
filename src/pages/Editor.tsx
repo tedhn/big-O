@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 
 import { transform } from "@babel/standalone";
 import Draggable from "react-draggable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { projectType } from "../App";
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
 
 const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 	const navigate = useNavigate();
+	const param = useParams();
 
 	const [projectName, setprojectName] = useState(project.projectName);
 	const [html, setHtml] = useState(project.codes.html);
@@ -49,11 +50,24 @@ const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 		</html>
 		`;
 
+	//redirect to home page when directly to code editor with no project
 	useEffect(() => {
-		if (project.id === "") {
+		if (project.id === "" || project.id !== param.id) {
 			navigate("/");
 		}
 	}, [project]);
+
+	// timeout to autosave on state change with debounce
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			console.log("saving");
+			if (project.id !== "") {
+				saveProject();
+			}
+		}, 5000);
+
+		return () => clearTimeout(timeout);
+	});
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
@@ -237,27 +251,8 @@ const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 				/>
 			</div>
 
-			{/* <Editor
-					defaultLanguage="css"
-					theme="vs-dark"
-					defaultValue={css}
-					onChange={onCssChange}
-				/>
-				<Editor
-					defaultLanguage="javascript"
-					theme="vs-dark"
-					defaultValue={js}
-					onChange={onJsChange}
-				/> */}
-
-			{/* <Draggable> */}
 			<div className="grow">
 				<div className="bg-white w-full h-full  text-black ">
-					{/* <div className="h-8 bg-black flex justify-start  p-2 items-center gap-1">
-						<div className="rounded-full cursor-pointer bg-red-600 h-3 w-3"></div>
-						<div className="rounded-full cursor-pointer bg-orange-400 h-3 w-3"></div>
-						<div className="rounded-full cursor-pointer bg-green-600 h-3 w-3"></div>
-					</div> */}
 					<iframe
 						srcDoc={error.code === "" ? srcDoc : errorDoc}
 						title="output"
@@ -267,7 +262,6 @@ const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 					/>
 				</div>
 			</div>
-			{/* </Draggable> */}
 		</div>
 	);
 };

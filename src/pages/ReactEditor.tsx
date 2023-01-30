@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { transform } from "@babel/standalone";
 import { projectType } from "../App";
 import Editor from "@monaco-editor/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
 	project: projectType;
@@ -12,6 +12,7 @@ interface Props {
 
 const ReactEditor: React.FC<Props> = ({ project, setProject }) => {
 	const navigate = useNavigate();
+	const param = useParams();
 
 	const [projectName, setprojectName] = useState(project.projectName);
 	const [html, setHtml] = useState(project.codes.html);
@@ -37,6 +38,25 @@ const ReactEditor: React.FC<Props> = ({ project, setProject }) => {
 		</html>
 		`;
 
+	//redirect to home page when directly to code editor with no project
+	useEffect(() => {
+		if (project.id === "" || project.id !== param.id) {
+			navigate("/");
+		}
+	}, [project]);
+
+	// timeout to autosave on state change with debounce
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			console.log("saving");
+			if (project.id !== "") {
+				saveProject();
+			}
+		}, 5000);
+
+		return () => clearTimeout(timeout);
+	});
+
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			try {
@@ -50,12 +70,6 @@ const ReactEditor: React.FC<Props> = ({ project, setProject }) => {
 
 		return () => clearTimeout(timeout);
 	}, [js]);
-
-	useEffect(() => {
-		if (project.id === "") {
-			navigate("/");
-		}
-	}, [project]);
 
 	const onHtmlChange = (value: string | undefined) => {
 		if (value !== undefined) setHtml(value);
