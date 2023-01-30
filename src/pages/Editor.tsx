@@ -127,8 +127,6 @@ const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 				localProject.projectName = projectName;
 				isInLocal = true;
 			}
-
-			console.log(localProject);
 		});
 
 		if (isInLocal) {
@@ -233,7 +231,6 @@ const CodeEditor: React.FC<Props> = ({ project, setProject }) => {
 				<Editor
 					path={focus.name}
 					defaultLanguage={focus.type}
-					theme="vs-dark"
 					defaultValue={focus.content}
 					onChange={onChange}
 					className="grow mb-2 rounded-md"

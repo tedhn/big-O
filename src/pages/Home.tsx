@@ -45,7 +45,6 @@ const Home: React.FC<Props> = ({ project, setProject }) => {
 	};
 
 	useEffect(() => {
-		console.log("aa");
 		if (project.id !== "") {
 			if (project.type === "react") {
 				navigate(`/react/${project.id}`);

@@ -110,8 +110,6 @@ const ReactEditor: React.FC<Props> = ({ project, setProject }) => {
 				localProject.projectName = projectName;
 				isInLocal = true;
 			}
-
-			console.log(localProject);
 		});
 
 		if (isInLocal) {
